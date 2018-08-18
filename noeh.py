@@ -93,27 +93,27 @@ def main():
 				if debug_file.split()[1].lower().partition("http://")[1] == 'http://':
 					connt = True
 					http_page = debug_file.split()[1]
-					if debug_file.split()[2].lower() == 'passwd':
-						http_page_passwd = debug_file.split()[3]
-						if http_page_passwd == '':
-							print color.adv+"The parameter 'passwd' is not defined"
-					else:
-						connt = False
-						print color.error+"Unknown parameter: %s" % (debug_file.split()[3])
 				elif debug_file.split()[1].lower().partition("https://")[1] == 'https://':
 					connt = True
 					http_page = debug_file.split()[1]
-					if debug_file.split()[2].lower() == 'passwd':
-						http_page_passwd = debug_file.split()[3]
-						if http_page_passwd == '':
-							http_page_passwd = b64encode(str(uuid.uuid4()))
-							print color.adv+"The parameter 'passwd' is not defined" 
-					else:
-						connt = False
-						print color.error+"Unknown parameter: %s" % (debug_file.split()[2])
 				else:
 					connt = False
 					print color.error+"Unknown protocol, Select 'http' or 'https'"
+				if debug_file.split()[2].lower() == 'passwd':
+					connt = True
+					http_page_passwd = debug_file.split()[3]
+				else:
+					connt = False
+					print color.error+"Unknown parameter: %s" % (debug_file.split()[3])
+				if debug_file.split()[4].lower() == 'noconfirm':
+					if debug_file.split()[5].lower() == 'true':
+						confirm_noeh = False
+					elif debug_file.split()[5].lower() == 'false':
+						confirm_noeh = True
+					else:
+						print color.error+"Unknown parameter: %s" % (debug_file.split()[5])
+				else:
+					print color.error+"Unknown parameter: %s" % (debug_file.split()[4])
 				if connt:
 					try:
 						target_object = get(http_page)
@@ -122,6 +122,20 @@ def main():
 						http_status = 404
 					if http_status == 200:
 						if get(http_page+"?noeh").text.title() == 'True':
+							confirm_connt_addr = True
+						else:
+							confirm_connt_addr = False
+							print color.yellow+"The indicated url is not associated with noeh"+color.none
+						
+						if not confirm_noeh:
+							if 'True' in get(http_page+"?noeh").text:
+								continue_to_hack = True
+							else:
+								continue_to_hack = False
+								print color.error+"Error, The indicated url is not a file to use with noeh!"+color.none
+						else:
+							continue_to_hack = False
+						if continue_to_hack:
 							while True:
 								debug_file = raw_input(logo+"[Shell:%s] > " % (str(http_page)))
 								if not debug_file:
@@ -139,8 +153,6 @@ def main():
 											print "[None]"
 									else:
 										print color.error+"Lost connection with the target URL: %s, Code: %s\n" % (str(http_page), "["+str(get(http_page).status_code)+"]")
-						else:
-							print color.error+"Error, The indicated url is not associated with noeh"
 					else:
 						print color.error+"Error, in the status code: %s" % (str(http_status))
 			elif debug_file.split()[0].lower() == 'info':
