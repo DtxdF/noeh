@@ -161,7 +161,7 @@ def main():
 				print "generate out <Name of the payload> passwd <Password>"
 				print "Example: "+"[!] Generating PHP Payload: test.php\n[+] Payload generated: test.php, Bytes: 343"
 				print "\nParameters to connect to a website"
-				print "conn_addr <HTTP_URL> passwd <Password>"
+				print "conn_addr <HTTP_URL> passwd <Password> noconfirm <true or false>"
 				print "Example: "+logo+"[Shell:Target_URL] > <command's> \n"
 			elif debug_file.split()[0].lower() == 'exit':
 				exit()
