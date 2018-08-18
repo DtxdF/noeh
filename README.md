@@ -13,4 +13,4 @@ Al ejecutar noeh, lo primero que debemos hacer en tal caso de que no hayamos gen
 
 # Capturas de pantalla
 ![](https://i.imgur.com/rHXQQRx.png)
-![](https://i.imgur.com/OpT1c26.png)
+![](https://i.imgur.com/CBFdzE1.png)
